@@ -1,6 +1,10 @@
 ## Canvas CSS — CSS and SVG for Canvas Components in Typescript
 
-this is part of canvas web components implement, this library helps dealing with CSS and related resources
+this is part of canvas web components implement
+
+this library helps dealing with CSS and related resources
+
+screenshot of bellow examples [http://imgur.com/a/YFNlE](http://imgur.com/a/YFNlE)
 
 this is a polygon example, reading CSS from both decorator and style tag (note index.html)
 
