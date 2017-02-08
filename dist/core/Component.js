@@ -31,8 +31,7 @@ System.register([], function (exports_1, context_1) {
                 function Component() {
                 }
                 Component.prototype.getStyle = function () {
-                    var cssStyleRule = this.canvas.css.styleSheetBySelector(this.component);
-                    return this.canvas.css.getDefinedRules(cssStyleRule.style);
+                    return this.canvas.css.rulesBySelector(this.component);
                 };
                 Component.prototype.render = function () {
                     if (this.isCSSShape || this.isSVGshape) {
@@ -41,13 +40,14 @@ System.register([], function (exports_1, context_1) {
                 };
                 Component.prototype.renderSvg = function () {
                     var _this = this;
-                    var style = this.canvas.css.styleSheetBySelector(this.component);
+                    var style = this.canvas.css.rulesBySelector(this.component);
+                    var css = "#" + this.component + " { " + this.canvas.css.obj2css(style) + " }";
                     var data = "";
                     if (this.isSVGshape) {
                         data = "<svg xmlns=\"http://www.w3.org/2000/svg\"\n                width=\"" + this.canvas.element.width + "\"\n                height=\"" + this.canvas.element.height + "\">\n                " + this.svg + "\n            </svg>";
                     }
                     else {
-                        data = "<svg xmlns=\"http://www.w3.org/2000/svg\"\n                    width=\"" + this.canvas.element.width + "\"\n                    height=\"" + this.canvas.element.height + "\">\n                <foreignObject width=\"100%\" height=\"100%\">\n                <style>#" + style.cssText + "</style>\n                <body xmlns=\"http://www.w3.org/1999/xhtml\">\n                    <div id=\"" + this.component + "\"></div>\n                </body></foreignObject>\n            </svg>";
+                        data = "<svg xmlns=\"http://www.w3.org/2000/svg\"\n                    width=\"" + this.canvas.element.width + "\"\n                    height=\"" + this.canvas.element.height + "\">\n                <foreignObject width=\"100%\" height=\"100%\">\n                <style>" + css + "</style>\n                <body xmlns=\"http://www.w3.org/1999/xhtml\">\n\n                    <div id=\"" + this.component + "\"></div>\n                </body></foreignObject>\n            </svg>";
                     }
                     var DOMURL = window.URL;
                     var img = new Image();

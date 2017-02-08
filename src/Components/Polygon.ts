@@ -9,25 +9,18 @@ import { Component, RegisterComponent } from "../core/Component";
 })
 export class Polygon extends Component {
 
-    points: any[]
-
-    constructor({
-        points = []
-    } : {
-        points: any[]
-    }) {
+    constructor(public points: any[] = []) {
         super();
-        points.push(points[0]);
-        this.points = points;
+        this.points.push(this.points[0]);
     }
 
     render() {
         const rules = this.getStyle();
 
         this.canvas.ctx.beginPath();
-        this.canvas.ctx.fillStyle = rules['background-color'];
-        this.canvas.ctx.lineWidth = parseInt(rules['border-top-width']);
-        this.canvas.ctx.strokeStyle = rules['border-top-style'];
+        this.canvas.ctx.fillStyle = rules['background-color']; // pink or lightblue
+        this.canvas.ctx.lineWidth = parseInt(rules['border-top-width']); // 1px
+        this.canvas.ctx.strokeStyle = rules['border-top-style']; // solid
 
         this.points.forEach((point, i) => {
             if (i != 0) {

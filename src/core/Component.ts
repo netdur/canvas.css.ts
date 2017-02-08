@@ -10,8 +10,7 @@ export abstract class Component {
     isSVGshape: boolean
 
     getStyle() {
-        const cssStyleRule = this.canvas.css.styleSheetBySelector(this.component);
-        return this.canvas.css.getDefinedRules(cssStyleRule.style);
+        return this.canvas.css.rulesBySelector(this.component);
     }
 
     render() {
@@ -21,7 +20,8 @@ export abstract class Component {
     }
 
     private renderSvg() {
-        const style = this.canvas.css.styleSheetBySelector(this.component);
+        const style = this.canvas.css.rulesBySelector(this.component);
+        const css = `#${this.component} { ${this.canvas.css.obj2css(style)} }`
 
         let data = "";
         if (this.isSVGshape) {
@@ -35,8 +35,9 @@ export abstract class Component {
                     width="${this.canvas.element.width}"
                     height="${this.canvas.element.height}">
                 <foreignObject width="100%" height="100%">
-                <style>#${style.cssText}</style>
+                <style>${css}</style>
                 <body xmlns="http://www.w3.org/1999/xhtml">
+
                     <div id="${this.component}"></div>
                 </body></foreignObject>
             </svg>`;

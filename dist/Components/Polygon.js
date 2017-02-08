@@ -25,11 +25,11 @@ System.register(["../core/Component"], function (exports_1, context_1) {
         execute: function () {
             Polygon = (function (_super) {
                 __extends(Polygon, _super);
-                function Polygon(_a) {
-                    var _b = _a.points, points = _b === void 0 ? [] : _b;
+                function Polygon(points) {
+                    if (points === void 0) { points = []; }
                     var _this = _super.call(this) || this;
-                    points.push(points[0]);
                     _this.points = points;
+                    _this.points.push(_this.points[0]);
                     return _this;
                 }
                 Polygon.prototype.render = function () {
@@ -58,7 +58,7 @@ System.register(["../core/Component"], function (exports_1, context_1) {
                     selector: 'polygon',
                     style: "\n        border: 1px black solid;\n        background: pink;\n    "
                 }),
-                __metadata("design:paramtypes", [Object])
+                __metadata("design:paramtypes", [Array])
             ], Polygon);
             exports_1("Polygon", Polygon);
         }

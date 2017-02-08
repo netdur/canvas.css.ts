@@ -14,9 +14,7 @@ class Main {
 		const pacman = new Pacman();
 		canvas.add(pacman);
 
-		const polygon = new Polygon({
-			points: [{x: 150, y: 100}, {x: 200, y: 50}, {x: 250, y: 100}]
-		});
+		const polygon = new Polygon([{x: 150, y: 100}, {x: 200, y: 50}, {x: 250, y: 100}]);
 		canvas.add(polygon);
 
 		const circle = new Circle();

@@ -27,9 +27,7 @@ System.register(["./core/Canvas", "./Components/Pacman", "./Components/Polygon",
                     });
                     var pacman = new Pacman_1.Pacman();
                     canvas.add(pacman);
-                    var polygon = new Polygon_1.Polygon({
-                        points: [{ x: 150, y: 100 }, { x: 200, y: 50 }, { x: 250, y: 100 }]
-                    });
+                    var polygon = new Polygon_1.Polygon([{ x: 150, y: 100 }, { x: 200, y: 50 }, { x: 250, y: 100 }]);
                     canvas.add(polygon);
                     var circle = new Circle_1.Circle();
                     canvas.add(circle);
