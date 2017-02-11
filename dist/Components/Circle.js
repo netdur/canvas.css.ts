@@ -27,6 +27,7 @@ System.register(["../core/Component"], function (exports_1, context_1) {
                     _this.isSVGshape = true;
                     return _this;
                 }
+                Circle.prototype.clearComponent = function () { };
                 return Circle;
             }(Component_1.Component));
             Circle = __decorate([

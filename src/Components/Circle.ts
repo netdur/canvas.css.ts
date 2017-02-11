@@ -5,5 +5,6 @@ import { Component, RegisterComponent } from "../core/Component";
     svg: '<circle cx="200" cy="160" r="40" stroke="black" stroke-width="3" fill="red" />'
 })
 export class Circle extends Component {
-    isSVGshape = true
+    isSVGshape = true;
+    clearComponent() {}
 }

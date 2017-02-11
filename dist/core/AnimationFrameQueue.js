@@ -21,8 +21,18 @@ System.register([], function (exports_1, context_1) {
                         window.cancelAnimationFrame(this.queue[i]);
                     }
                 };
+                AnimationFrameQueue.delay = function (ms) {
+                    return new Promise(function (resolve) { return setTimeout(resolve, ms); });
+                };
                 return AnimationFrameQueue;
             }());
+            AnimationFrameQueue.nextFrame = function () {
+                var resolve = null;
+                var promise = new Promise(function (r) { return resolve = r; });
+                if (resolve != null)
+                    window.requestAnimationFrame(resolve);
+                return promise;
+            };
             exports_1("AnimationFrameQueue", AnimationFrameQueue);
         }
     };

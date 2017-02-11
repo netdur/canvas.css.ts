@@ -16,5 +16,6 @@ import { Component, RegisterComponent } from "../core/Component";
     `
 })
 export class Pacman extends Component {
-    isCSSShape = true
+    isCSSshape = true
+    clearComponent() {}
 }

@@ -14,4 +14,15 @@ export class AnimationFrameQueue {
             window.cancelAnimationFrame(this.queue[i]);
         }
     }
+
+    static nextFrame = () => {
+        let resolve = null;
+        const promise = new Promise(r => resolve = r);
+        if (resolve != null) window.requestAnimationFrame(resolve);
+    	return promise;
+    }
+
+    static delay(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 }

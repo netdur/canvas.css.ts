@@ -11,6 +11,8 @@ export class Canvas {
 	queue = new AnimationFrameQueue()
 	css = new CSS()
 
+	private tree: Array<Component> = new Array()
+
 	constructor({
 		id = "",
 		canvas,
@@ -48,15 +50,50 @@ export class Canvas {
 			this.element.height = height;
 		}
 
+		window.addEventListener('resize', e => {
+			if (fullScreen) {
+				this.element.width = document.body.clientWidth;
+				this.element.height = document.body.clientHeight;
+				this.render();
+			}
+		});
+
 		/* init properties */
 		this.id = id;
 		this.ctx = this.element.getContext("2d");
 	}
 
-	add(component: any) {
+	add(component: Component, render: boolean = false) {
 		component.canvas = this;
+		this.tree.push(component);
+		if (render == false) return;
 		this.queue.add(() => {
 			component.render();
+		});
+	}
+
+	async nextFrame() {
+		this.render();
+		return await AnimationFrameQueue.nextFrame();
+	}
+
+	render() {
+		this.queue.add(() => {
+			/* just for demo, in final version, only diff will redrawan */
+			this.ctx.save();
+			this.ctx.fillStyle = "#eeeeee";
+			this.ctx.fillRect(0, 0, this.element.width, this.element.height);
+			this.ctx.restore();
+			/* */
+			this.tree.forEach(component => {
+				component.render();
+				/*
+				if (component.shouldRedraw == true) {
+					component.clearComponent();
+					component.render();
+				}
+				*/
+			});
 		});
 	}
 }

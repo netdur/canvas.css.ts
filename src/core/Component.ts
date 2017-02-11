@@ -3,32 +3,52 @@ import { Canvas } from "./Canvas";
 export abstract class Component {
 
     canvas: Canvas
-    component: string
-    svg: string
+    name: string
 
-    isCSSShape: boolean
+    SVGString: string
+    SVGBitmap: HTMLImageElement = null
+
+    isCSSshape: boolean
     isSVGshape: boolean
 
+    shadowElement: HTMLElement
+    hasCSSAnimation = false
+
+    shouldRedraw: boolean = false
+    abstract clearComponent(): void;
+
     getStyle() {
-        return this.canvas.css.rulesBySelector(this.component);
+        return this.canvas.css.rulesBySelector(this.name);
     }
 
     render() {
-        if (this.isCSSShape || this.isSVGshape) {
-            this.renderSvg();
+        if (this.isCSSshape || this.isSVGshape) {
+            if (this.SVGBitmap == null) {
+                this.buildSVG();
+            } else {
+                this.renderSVG();
+            }
         }
     }
 
-    private renderSvg() {
-        const style = this.canvas.css.rulesBySelector(this.component);
-        const css = `#${this.component} { ${this.canvas.css.obj2css(style)} }`
+    private renderSVG() {
+        this.canvas.ctx.save();
+        this.canvas.ctx.beginPath();
+        this.canvas.ctx.drawImage(this.SVGBitmap, 0, 0);
+        this.canvas.ctx.closePath();
+        this.canvas.ctx.restore();
+    }
+
+    private buildSVG() {
+        const style = this.canvas.css.rulesBySelector(this.name);
+        const css = `#${this.name} { ${this.canvas.css.obj2css(style)} }`
 
         let data = "";
         if (this.isSVGshape) {
             data = `<svg xmlns="http://www.w3.org/2000/svg"
                 width="${this.canvas.element.width}"
                 height="${this.canvas.element.height}">
-                ${this.svg}
+                ${this.SVGString}
             </svg>`;
         } else {
             data = `<svg xmlns="http://www.w3.org/2000/svg"
@@ -37,14 +57,13 @@ export abstract class Component {
                 <foreignObject width="100%" height="100%">
                 <style>${css}</style>
                 <body xmlns="http://www.w3.org/1999/xhtml">
-
-                    <div id="${this.component}"></div>
+                    <div id="${this.name}"></div>
                 </body></foreignObject>
             </svg>`;
         }
 
         const DOMURL = window.URL;
-        const img = new Image();
+        const img: HTMLImageElement = new Image();
         const svg = new Blob([data], {
             type: 'image/svg+xml;charset=utf-8'
         });
@@ -53,10 +72,9 @@ export abstract class Component {
         img.src = url;
 
         img.addEventListener('load', e => {
-            this.canvas.ctx.beginPath();
-            this.canvas.ctx.drawImage(img, 0, 0);
+            this.SVGBitmap = img;
+            this.renderSVG()
             DOMURL.revokeObjectURL(url);
-            this.canvas.ctx.closePath();
         });
     }
 }
@@ -74,11 +92,11 @@ export function RegisterComponent({
 }) {
 	return (target: Function) => {
 
-        Object.defineProperty(target.prototype, "component", {
+        Object.defineProperty(target.prototype, "name", {
             value: selector
         });
 
-        Object.defineProperty(target.prototype, "svg", {
+        Object.defineProperty(target.prototype, "SVGString", {
             value: svg
         });
 

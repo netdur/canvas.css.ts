@@ -12,7 +12,7 @@ System.register(["../core/Component"], function (exports_1, context_1) {
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var Component_1, Pacman;
+    var Component_1, Circler;
     return {
         setters: [
             function (Component_1_1) {
@@ -20,23 +20,35 @@ System.register(["../core/Component"], function (exports_1, context_1) {
             }
         ],
         execute: function () {
-            Pacman = (function (_super) {
-                __extends(Pacman, _super);
-                function Pacman() {
+            Circler = (function (_super) {
+                __extends(Circler, _super);
+                function Circler() {
                     var _this = _super !== null && _super.apply(this, arguments) || this;
-                    _this.isCSSshape = true;
+                    _this.radius = 40;
+                    _this.angel = 0;
                     return _this;
                 }
-                Pacman.prototype.clearComponent = function () { };
-                return Pacman;
+                Circler.prototype.clearComponent = function () { };
+                Circler.prototype.render = function () {
+                    var rules = this.getStyle();
+                    this.canvas.ctx.save();
+                    this.canvas.ctx.beginPath();
+                    var radius = this.radius + 10 * Math.abs(Math.cos(this.angel));
+                    this.canvas.ctx.arc(200, 300, radius, 0, Math.PI * 2, false);
+                    this.canvas.ctx.fillStyle = rules['background-color'];
+                    this.canvas.ctx.fill();
+                    this.canvas.ctx.closePath();
+                    this.canvas.ctx.restore();
+                };
+                return Circler;
             }(Component_1.Component));
-            Pacman = __decorate([
+            Circler = __decorate([
                 Component_1.RegisterComponent({
-                    selector: 'pacman',
-                    style: "\n        width: 0px;\n        height: 0px;\n        border-right: 60px solid transparent;\n        border-top: 60px solid lightblue;\n        border-bottom: 60px solid lightblue;\n        border-left: 60px solid lightblue;\n        border-top-right-radius: 60px;\n        border-top-left-radius: 60px;\n        border-bottom-right-radius: 60px;\n        border-bottom-left-radius: 60px;\n    "
+                    selector: 'circler',
+                    style: "\n        background: green;\n        top: 0px;\n        left: 0px;\n    "
                 })
-            ], Pacman);
-            exports_1("Pacman", Pacman);
+            ], Circler);
+            exports_1("Circler", Circler);
         }
     };
 });

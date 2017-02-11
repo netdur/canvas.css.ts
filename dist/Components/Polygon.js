@@ -32,9 +32,30 @@ System.register(["../core/Component"], function (exports_1, context_1) {
                     _this.points.push(_this.points[0]);
                     return _this;
                 }
+                Polygon.prototype.clearComponent = function () {
+                    var bounds = this.calcBounds();
+                    this.canvas.ctx.clearRect(bounds.x, bounds.y, bounds.width, bounds.height);
+                };
+                Polygon.prototype.calcBounds = function () {
+                    var x = [];
+                    var y = [];
+                    this.points.forEach(function (point) {
+                        x.push(point.x);
+                        y.push(point.y);
+                    });
+                    var minx = Math.min.apply(Math, x);
+                    var miny = Math.min.apply(Math, y);
+                    return {
+                        x: minx,
+                        y: miny,
+                        width: Math.max.apply(Math, x) - minx,
+                        height: Math.max.apply(Math, y) - miny
+                    };
+                };
                 Polygon.prototype.render = function () {
                     var _this = this;
                     var rules = this.getStyle();
+                    this.canvas.ctx.save();
                     this.canvas.ctx.beginPath();
                     this.canvas.ctx.fillStyle = rules['background-color'];
                     this.canvas.ctx.lineWidth = parseInt(rules['border-top-width']);
@@ -50,6 +71,7 @@ System.register(["../core/Component"], function (exports_1, context_1) {
                     this.canvas.ctx.fill();
                     this.canvas.ctx.stroke();
                     this.canvas.ctx.closePath();
+                    this.canvas.ctx.restore();
                 };
                 return Polygon;
             }(Component_1.Component));
