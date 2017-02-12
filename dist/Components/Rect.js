@@ -60,7 +60,7 @@ System.register(["../core/Component", "../core/CSS"], function (exports_1, conte
             Rect = __decorate([
                 Component_1.RegisterComponent({
                     selector: 'rect',
-                    style: "\n        border: 1px red solid;\n        background: green;\n        top: 0px;\n        left: 0px;\n        width: 100px;\n        height: 50px;\n    "
+                    style: "\n        rect {\n            border: 1px red solid;\n            background: green;\n            top: 0px;\n            left: 0px;\n            width: 100px;\n            height: 50px;\n        }\n    "
                 }),
                 __metadata("design:paramtypes", [])
             ], Rect);

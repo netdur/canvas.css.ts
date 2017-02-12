@@ -4,6 +4,9 @@ import { AnimationFrameQueue } from "./AnimationFrameQueue";
 
 export class Canvas {
 
+	// not used
+	static poolSize = 40
+
 	id: string
 	element: HTMLCanvasElement
 	ctx: CanvasRenderingContext2D
@@ -11,6 +14,7 @@ export class Canvas {
 	queue = new AnimationFrameQueue()
 	css = new CSS()
 
+	// mack this a matrix respecting z-index
 	private tree: Set<Component> = new Set()
 
 	constructor({
@@ -19,14 +23,16 @@ export class Canvas {
 		fullScreen = false,
 		offScreen = false,
 		width = 600,
-		height = 400
+		height = 400,
+		scale = devicePixelRatio
 	} : {
 		id?: string,
 		canvas?: (string | HTMLCanvasElement),
 		fullScreen?: boolean,
 		offScreen?: boolean,
 		width?: number,
-		height?: number
+		height?: number,
+		scale?: number
 	}) {
 
 		/* create canvas element */
@@ -43,24 +49,27 @@ export class Canvas {
 
 		/* resize canvas */
 		if (fullScreen) {
-			this.element.width = document.body.clientWidth;
-			this.element.height = document.body.clientHeight;
+			this.element.width = document.body.clientWidth * scale;
+			this.element.height = document.body.clientHeight * scale;
 		} else {
-			this.element.width = width;
-			this.element.height = height;
+			this.element.width = width * scale;
+			this.element.height = height * scale;
 		}
 
 		window.addEventListener('resize', e => {
-			if (fullScreen) {
-				this.element.width = document.body.clientWidth;
-				this.element.height = document.body.clientHeight;
-				this.render();
-			}
+			requestAnimationFrame(() => {
+				if (fullScreen) {
+					this.element.width = document.body.clientWidth * scale;
+					this.element.height = document.body.clientHeight * scale;
+					this.render();
+				}
+			});
 		});
 
 		/* init properties */
 		this.id = id;
 		this.ctx = this.element.getContext("2d");
+		this.ctx.scale(scale, scale);
 
 		/* canvas events */
 		this.element.addEventListener("click", e => this.emit("click", e));

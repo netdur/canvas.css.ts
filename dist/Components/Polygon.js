@@ -31,27 +31,9 @@ System.register(["../core/Component"], function (exports_1, context_1) {
                     _this.points = points;
                     return _this;
                 }
-                Polygon.prototype.clearComponent = function () {
-                    var bounds = this.calcBounds();
-                    this.canvas.ctx.clearRect(bounds.x, bounds.y, bounds.width, bounds.height);
-                };
-                Polygon.prototype.calcBounds = function () {
-                    var x = [];
-                    var y = [];
-                    this.points.forEach(function (point) {
-                        x.push(point.x);
-                        y.push(point.y);
-                    });
-                    var minx = Math.min.apply(Math, x);
-                    var miny = Math.min.apply(Math, y);
-                    return {
-                        x: minx,
-                        y: miny,
-                        width: Math.max.apply(Math, x) - minx,
-                        height: Math.max.apply(Math, y) - miny
-                    };
-                };
+                Polygon.prototype.clearComponent = function () { };
                 Polygon.prototype.render = function () {
+                    this.clearComponent();
                     var rules = this.getStyle();
                     this.path = new Path2D();
                     this.path.moveTo(this.points[0].x, this.points[0].y);
@@ -71,7 +53,7 @@ System.register(["../core/Component"], function (exports_1, context_1) {
             Polygon = __decorate([
                 Component_1.RegisterComponent({
                     selector: 'polygon',
-                    style: "\n        border: 1px black solid;\n        background: pink;\n    "
+                    style: "\n        polygon {\n            border: 1px black solid;\n            background: pink;\n        }\n    "
                 }),
                 __metadata("design:paramtypes", [Array])
             ], Polygon);

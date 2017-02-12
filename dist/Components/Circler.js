@@ -44,7 +44,7 @@ System.register(["../core/Component"], function (exports_1, context_1) {
             Circler = __decorate([
                 Component_1.RegisterComponent({
                     selector: 'circler',
-                    style: "\n        background: gray;\n        top: 0px;\n        left: 0px;\n    "
+                    style: "\n        circler {\n            background: gray;\n            top: 0px;\n            left: 0px;\n        }\n    "
                 })
             ], Circler);
             exports_1("Circler", Circler);

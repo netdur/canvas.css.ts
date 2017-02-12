@@ -1,4 +1,7 @@
 export class CSS {
+	/**
+	 * this doesn't account for css selector like #id .class and others, just component name
+	 */
 	rulesBySelector(selector: string) : Object {
 		const definedRules = {}
 

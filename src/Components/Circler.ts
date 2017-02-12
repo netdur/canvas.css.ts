@@ -3,9 +3,11 @@ import { Component, RegisterComponent } from "../core/Component";
 @RegisterComponent({
     selector: 'circler',
     style: `
-        background: gray;
-        top: 0px;
-        left: 0px;
+        circler {
+            background: gray;
+            top: 0px;
+            left: 0px;
+        }
     `
 })
 export class Circler extends Component {

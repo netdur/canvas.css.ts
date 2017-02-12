@@ -15,7 +15,7 @@ System.register([], function (exports_1, context_1) {
                 styleElement.appendChild(document.createTextNode(""));
                 document.head.appendChild(styleElement);
                 var cssStyleSheet = styleElement.sheet;
-                cssStyleSheet.insertRule(selector + " { " + style + " }", 0);
+                cssStyleSheet.insertRule(style, 0);
             }
         };
     }

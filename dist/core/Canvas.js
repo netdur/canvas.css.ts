@@ -49,7 +49,7 @@ System.register(["./CSS", "./AnimationFrameQueue"], function (exports_1, context
         execute: function () {
             Canvas = (function () {
                 function Canvas(_a) {
-                    var _b = _a.id, id = _b === void 0 ? "" : _b, canvas = _a.canvas, _c = _a.fullScreen, fullScreen = _c === void 0 ? false : _c, _d = _a.offScreen, offScreen = _d === void 0 ? false : _d, _e = _a.width, width = _e === void 0 ? 600 : _e, _f = _a.height, height = _f === void 0 ? 400 : _f;
+                    var _b = _a.id, id = _b === void 0 ? "" : _b, canvas = _a.canvas, _c = _a.fullScreen, fullScreen = _c === void 0 ? false : _c, _d = _a.offScreen, offScreen = _d === void 0 ? false : _d, _e = _a.width, width = _e === void 0 ? 600 : _e, _f = _a.height, height = _f === void 0 ? 400 : _f, _g = _a.scale, scale = _g === void 0 ? devicePixelRatio : _g;
                     var _this = this;
                     this.queue = new AnimationFrameQueue_1.AnimationFrameQueue();
                     this.css = new CSS_1.CSS();
@@ -67,33 +67,26 @@ System.register(["./CSS", "./AnimationFrameQueue"], function (exports_1, context
                         }
                     }
                     if (fullScreen) {
-                        this.element.width = document.body.clientWidth;
-                        this.element.height = document.body.clientHeight;
+                        this.element.width = document.body.clientWidth * scale;
+                        this.element.height = document.body.clientHeight * scale;
                     }
                     else {
-                        this.element.width = width;
-                        this.element.height = height;
+                        this.element.width = width * scale;
+                        this.element.height = height * scale;
                     }
                     window.addEventListener('resize', function (e) {
-                        if (fullScreen) {
-                            _this.element.width = document.body.clientWidth;
-                            _this.element.height = document.body.clientHeight;
-                            _this.render();
-                        }
+                        requestAnimationFrame(function () {
+                            if (fullScreen) {
+                                _this.element.width = document.body.clientWidth * scale;
+                                _this.element.height = document.body.clientHeight * scale;
+                                _this.render();
+                            }
+                        });
                     });
                     this.id = id;
                     this.ctx = this.element.getContext("2d");
+                    this.ctx.scale(scale, scale);
                     this.element.addEventListener("click", function (e) { return _this.emit("click", e); });
-                    this.element.addEventListener("dblclick", function (e) { return _this.emit("dblclick", e); });
-                    this.element.addEventListener("mouseover", function (e) { return _this.emit("mouseover", e); });
-                    this.element.addEventListener("mouseout", function (e) { return _this.emit("mouseout", e); });
-                    this.element.addEventListener("mouseenter", function (e) { return _this.emit("mouseenter", e); });
-                    this.element.addEventListener("mouseleave", function (e) { return _this.emit("mouseleave", e); });
-                    this.element.addEventListener("mousedown", function (e) { return _this.emit("mousedown", e); });
-                    this.element.addEventListener("mouseup", function (e) { return _this.emit("mouseup", e); });
-                    this.element.addEventListener("mousemove", function (e) { return _this.emit("mousemove", e); });
-                    this.element.addEventListener("contextmenu", function (e) { return _this.emit("contextmenu", e); });
-                    this.element.addEventListener("mousewheel", function (e) { return _this.emit("mousewheel", e); });
                 }
                 Canvas.prototype.emit = function (label, e) {
                     var _this = this;

@@ -33,7 +33,7 @@ System.register(["../core/Component"], function (exports_1, context_1) {
             Pacman = __decorate([
                 Component_1.RegisterComponent({
                     selector: 'pacman',
-                    style: "\n        width: 0px;\n        height: 0px;\n        border-right: 60px solid transparent;\n        border-top: 60px solid lightblue;\n        border-bottom: 60px solid lightblue;\n        border-left: 60px solid lightblue;\n        border-top-right-radius: 60px;\n        border-top-left-radius: 60px;\n        border-bottom-right-radius: 60px;\n        border-bottom-left-radius: 60px;\n    "
+                    style: "\n        pacman {\n            width: 0px;\n            height: 0px;\n            border-right: 60px solid transparent;\n            border-top: 60px solid lightblue;\n            border-bottom: 60px solid lightblue;\n            border-left: 60px solid lightblue;\n            border-top-right-radius: 60px;\n            border-top-left-radius: 60px;\n            border-bottom-right-radius: 60px;\n            border-bottom-left-radius: 60px;\n        }\n    "
                 })
             ], Pacman);
             exports_1("Pacman", Pacman);

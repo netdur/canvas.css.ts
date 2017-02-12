@@ -139,7 +139,7 @@ export function RegisterComponent({
             document.head.appendChild(styleElement);
 
             const cssStyleSheet = styleElement.sheet as CSSStyleSheet;
-            cssStyleSheet.insertRule(`${selector} { ${style} }`, 0);
+            cssStyleSheet.insertRule(style, 0);
         }
 
 	}

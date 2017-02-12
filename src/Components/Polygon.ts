@@ -3,8 +3,10 @@ import { Component, RegisterComponent } from "../core/Component";
 @RegisterComponent({
     selector: 'polygon',
     style: `
-        border: 1px black solid;
-        background: pink;
+        polygon {
+            border: 1px black solid;
+            background: pink;
+        }
     `
 })
 export class Polygon extends Component {

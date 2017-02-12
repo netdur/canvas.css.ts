@@ -4,12 +4,14 @@ import { CSS } from "../core/CSS";
 @RegisterComponent({
     selector: 'rect',
     style: `
-        border: 1px red solid;
-        background: green;
-        top: 0px;
-        left: 0px;
-        width: 100px;
-        height: 50px;
+        rect {
+            border: 1px red solid;
+            background: green;
+            top: 0px;
+            left: 0px;
+            width: 100px;
+            height: 50px;
+        }
     `
 })
 export class Rect extends Component {
