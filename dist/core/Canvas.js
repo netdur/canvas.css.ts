@@ -53,7 +53,7 @@ System.register(["./CSS", "./AnimationFrameQueue"], function (exports_1, context
                     var _this = this;
                     this.queue = new AnimationFrameQueue_1.AnimationFrameQueue();
                     this.css = new CSS_1.CSS();
-                    this.tree = new Array();
+                    this.tree = new Set();
                     if (canvas instanceof HTMLCanvasElement) {
                         this.element = canvas;
                     }
@@ -83,11 +83,34 @@ System.register(["./CSS", "./AnimationFrameQueue"], function (exports_1, context
                     });
                     this.id = id;
                     this.ctx = this.element.getContext("2d");
+                    this.element.addEventListener("click", function (e) { return _this.emit("click", e); });
+                    this.element.addEventListener("dblclick", function (e) { return _this.emit("dblclick", e); });
+                    this.element.addEventListener("mouseover", function (e) { return _this.emit("mouseover", e); });
+                    this.element.addEventListener("mouseout", function (e) { return _this.emit("mouseout", e); });
+                    this.element.addEventListener("mouseenter", function (e) { return _this.emit("mouseenter", e); });
+                    this.element.addEventListener("mouseleave", function (e) { return _this.emit("mouseleave", e); });
+                    this.element.addEventListener("mousedown", function (e) { return _this.emit("mousedown", e); });
+                    this.element.addEventListener("mouseup", function (e) { return _this.emit("mouseup", e); });
+                    this.element.addEventListener("mousemove", function (e) { return _this.emit("mousemove", e); });
+                    this.element.addEventListener("contextmenu", function (e) { return _this.emit("contextmenu", e); });
+                    this.element.addEventListener("mousewheel", function (e) { return _this.emit("mousewheel", e); });
                 }
+                Canvas.prototype.emit = function (label, e) {
+                    var _this = this;
+                    var position = this.getPosition();
+                    var x = e.clientX - position.x;
+                    var y = e.clientY - position.y;
+                    this.tree.forEach(function (component) {
+                        if (component.path != null
+                            && _this.ctx.isPointInPath(component.path, x, y)) {
+                            component.emit(label, e);
+                        }
+                    });
+                };
                 Canvas.prototype.add = function (component, render) {
                     if (render === void 0) { render = false; }
                     component.canvas = this;
-                    this.tree.push(component);
+                    this.tree.add(component);
                     if (render == false)
                         return;
                     this.queue.add(function () {
@@ -105,6 +128,20 @@ System.register(["./CSS", "./AnimationFrameQueue"], function (exports_1, context
                             }
                         });
                     });
+                };
+                Canvas.prototype.getPosition = function (el) {
+                    if (el === void 0) { el = this.element; }
+                    var x = 0;
+                    var y = 0;
+                    while (el) {
+                        x += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+                        y += (el.offsetTop - el.scrollTop + el.clientTop);
+                        el = el.offsetParent;
+                    }
+                    return {
+                        x: x,
+                        y: y
+                    };
                 };
                 Canvas.prototype.render = function () {
                     var _this = this;

@@ -1,4 +1,4 @@
-System.register(["./core/Canvas", "./Components/Pacman", "./Components/Polygon", "./Components/Circle", "./Components/Rect", "./Components/Circler"], function (exports_1, context_1) {
+System.register(["./core/Canvas", "./core/Easing", "./Components/Pacman", "./Components/Polygon", "./Components/Circle", "./Components/Rect", "./Components/Circler"], function (exports_1, context_1) {
     "use strict";
     var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,11 +36,14 @@ System.register(["./core/Canvas", "./Components/Pacman", "./Components/Polygon",
         }
     };
     var __moduleName = context_1 && context_1.id;
-    var Canvas_1, Pacman_1, Polygon_1, Circle_1, Rect_1, Circler_1, Main;
+    var Canvas_1, Easing_1, Pacman_1, Polygon_1, Circle_1, Rect_1, Circler_1, Main;
     return {
         setters: [
             function (Canvas_1_1) {
                 Canvas_1 = Canvas_1_1;
+            },
+            function (Easing_1_1) {
+                Easing_1 = Easing_1_1;
             },
             function (Pacman_1_1) {
                 Pacman_1 = Pacman_1_1;
@@ -61,6 +64,7 @@ System.register(["./core/Canvas", "./Components/Pacman", "./Components/Polygon",
         execute: function () {
             Main = (function () {
                 function Main() {
+                    var _this = this;
                     this.canvas = new Canvas_1.Canvas({
                         id: 'c',
                         fullScreen: true
@@ -73,15 +77,40 @@ System.register(["./core/Canvas", "./Components/Pacman", "./Components/Polygon",
                     this.canvas.add(circle);
                     var rect = new Rect_1.Rect();
                     this.canvas.add(rect);
+                    this.animateRect(rect);
                     var circler = new Circler_1.Circler();
                     circler.radius = 30;
                     this.canvas.add(circler);
                     this.animateCircler(circler);
                     var aniPolygon = new Polygon_1.Polygon([{ x: 200, y: 150 }, { x: 250, y: 100 }, { x: 300, y: 150 }]);
                     this.canvas.add(aniPolygon);
-                    this.animatePolygon(aniPolygon);
+                    aniPolygon.addListener("click", function (e) {
+                        _this.animatePolygon(aniPolygon);
+                    });
                     this.canvas.render();
                 }
+                Main.prototype.animateRect = function (rect) {
+                    return __awaiter(this, void 0, void 0, function () {
+                        var iteration, totalIterations;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    iteration = 0;
+                                    totalIterations = 200;
+                                    _a.label = 1;
+                                case 1:
+                                    if (!true) return [3 /*break*/, 3];
+                                    rect.x = Easing_1.Easing.easeInCubic(iteration, -100, 600, totalIterations);
+                                    iteration = (iteration < totalIterations) ? iteration + 1 : 0;
+                                    return [4 /*yield*/, this.canvas.nextFrame()];
+                                case 2:
+                                    _a.sent();
+                                    return [3 /*break*/, 1];
+                                case 3: return [2 /*return*/];
+                            }
+                        });
+                    });
+                };
                 Main.prototype.animateCircler = function (circler) {
                     return __awaiter(this, void 0, void 0, function () {
                         return __generator(this, function (_a) {
@@ -107,7 +136,7 @@ System.register(["./core/Canvas", "./Components/Pacman", "./Components/Polygon",
                                     i = 0;
                                     _a.label = 1;
                                 case 1:
-                                    if (!(i < 200)) return [3 /*break*/, 4];
+                                    if (!(i < 210)) return [3 /*break*/, 4];
                                     polygon.points.forEach(function (point, i) {
                                         polygon.points[i] = {
                                             x: point.x + 1,

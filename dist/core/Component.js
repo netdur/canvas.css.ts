@@ -11,28 +11,52 @@ System.register([], function (exports_1, context_1) {
                 value: svg
             });
             if (style != "") {
-                insertRule(selector, style);
+                var styleElement = document.createElement("style");
+                styleElement.appendChild(document.createTextNode(""));
+                document.head.appendChild(styleElement);
+                var cssStyleSheet = styleElement.sheet;
+                cssStyleSheet.insertRule(selector + " { " + style + " }", 0);
             }
         };
     }
     exports_1("RegisterComponent", RegisterComponent);
-    function insertRule(selector, style) {
-        var styleElement = document.createElement("style");
-        styleElement.appendChild(document.createTextNode(""));
-        document.head.appendChild(styleElement);
-        var cssStyleSheet = styleElement.sheet;
-        cssStyleSheet.insertRule(selector + " { " + style + " }", 0);
-    }
     var Component;
     return {
         setters: [],
         execute: function () {
             Component = (function () {
                 function Component() {
+                    var _this = this;
                     this.SVGBitmap = null;
-                    this.hasCSSAnimation = false;
                     this.shouldRedraw = false;
+                    this.isOver = false;
+                    this.listeners = new Map();
+                    this.addListener("mouseover", function (e) {
+                        console.log(_this.name + ":hover");
+                    });
+                    this.addListener("mouseout", function (e) {
+                        console.log("" + _this.name);
+                    });
                 }
+                Component.prototype.addListener = function (label, callback) {
+                    this.listeners.has(label) || this.listeners.set(label, []);
+                    this.listeners.get(label).push(callback);
+                };
+                Component.prototype.removeListener = function (label, callback) { };
+                Component.prototype.emit = function (label) {
+                    var args = [];
+                    for (var _i = 1; _i < arguments.length; _i++) {
+                        args[_i - 1] = arguments[_i];
+                    }
+                    var listeners = this.listeners.get(label);
+                    if (listeners && listeners.length) {
+                        listeners.forEach(function (listener) {
+                            listener.apply(void 0, args);
+                        });
+                        return true;
+                    }
+                    return false;
+                };
                 Component.prototype.getStyle = function () {
                     return this.canvas.css.rulesBySelector(this.name);
                 };

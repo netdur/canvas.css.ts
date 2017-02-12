@@ -1,4 +1,5 @@
 import { Component, RegisterComponent } from "../core/Component";
+import { CSS } from "../core/CSS";
 
 @RegisterComponent({
     selector: 'polygon',
@@ -11,7 +12,6 @@ export class Polygon extends Component {
 
     constructor(public points: any[] = []) {
         super();
-        this.points.push(this.points[0]);
     }
 
     clearComponent() {
@@ -40,23 +40,18 @@ export class Polygon extends Component {
         // this.clearComponent();
         const rules = this.getStyle();
 
+        this.path = new Path2D();
+        this.path.moveTo(this.points[0].x, this.points[0].y);
+        this.path.lineTo(this.points[1].x, this.points[1].y);
+        this.path.lineTo(this.points[2].x, this.points[2].y);
+        this.path.closePath();
+
         this.canvas.ctx.save();
-        this.canvas.ctx.beginPath();
-        this.canvas.ctx.fillStyle = rules['background-color']; // pink or lightblue
-        this.canvas.ctx.lineWidth = parseInt(rules['border-top-width']); // 1px
+        this.canvas.ctx.fillStyle = rules['background-color'];
+        this.canvas.ctx.fill(this.path);
+        this.canvas.ctx.lineWidth = parseInt(rules['border-top-width']);
         this.canvas.ctx.strokeStyle = rules['border-top-style']; // solid
-
-        this.points.forEach((point, i) => {
-            if (i != 0) {
-                this.canvas.ctx.lineTo(point.x, point.y);
-            } else {
-                this.canvas.ctx.moveTo(point.x, point.y);
-            }
-        });
-
-        this.canvas.ctx.fill();
-        this.canvas.ctx.stroke();
-        this.canvas.ctx.closePath();
+        this.canvas.ctx.stroke(this.path);
         this.canvas.ctx.restore();
     }
 }

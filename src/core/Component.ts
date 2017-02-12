@@ -4,6 +4,7 @@ export abstract class Component {
 
     canvas: Canvas
     name: string
+    path: Path2D
 
     SVGString: string
     SVGBitmap: HTMLImageElement = null
@@ -11,11 +12,42 @@ export abstract class Component {
     isCSSshape: boolean
     isSVGshape: boolean
 
-    shadowElement: HTMLElement
-    hasCSSAnimation = false
-
     shouldRedraw: boolean = false
     abstract clearComponent(): void;
+
+    // status:
+
+    private isOver: boolean = false
+
+    constructor() {
+        this.addListener("mouseover", (e: MouseEvent) => {
+            console.log(`${this.name}:hover`);
+        });
+        this.addListener("mouseout", (e: MouseEvent) => {
+            console.log(`${this.name}`);
+        });
+    }
+
+    /* events */
+    listeners = new Map()
+
+    addListener(label: string, callback: Function) {
+        this.listeners.has(label) || this.listeners.set(label, []);
+        this.listeners.get(label).push(callback);
+    }
+
+    removeListener(label: string, callback: Function) {}
+
+    emit(label: string, ...args: any[]) {
+        let listeners = this.listeners.get(label);
+        if (listeners && listeners.length) {
+            listeners.forEach((listener: Function) => {
+                listener(...args); 
+            });
+            return true;
+        }
+        return false;
+    }
 
     getStyle() {
         return this.canvas.css.rulesBySelector(this.name);
@@ -101,16 +133,14 @@ export function RegisterComponent({
         });
 
         if (style != "") {
-            insertRule(selector, style);
+            // insertRule(selector, style);
+            const styleElement: HTMLStyleElement = document.createElement("style");
+            styleElement.appendChild(document.createTextNode(""));
+            document.head.appendChild(styleElement);
+
+            const cssStyleSheet = styleElement.sheet as CSSStyleSheet;
+            cssStyleSheet.insertRule(`${selector} { ${style} }`, 0);
         }
+
 	}
-}
-
-function insertRule(selector: string, style: string) {
-    const styleElement: HTMLStyleElement = document.createElement("style");
-    styleElement.appendChild(document.createTextNode(""));
-    document.head.appendChild(styleElement);
-
-    const cssStyleSheet = styleElement.sheet as CSSStyleSheet;
-    cssStyleSheet.insertRule(`${selector} { ${style} }`, 0);
 }

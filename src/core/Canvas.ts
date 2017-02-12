@@ -11,7 +11,7 @@ export class Canvas {
 	queue = new AnimationFrameQueue()
 	css = new CSS()
 
-	private tree: Array<Component> = new Array()
+	private tree: Set<Component> = new Set()
 
 	constructor({
 		id = "",
@@ -61,11 +61,27 @@ export class Canvas {
 		/* init properties */
 		this.id = id;
 		this.ctx = this.element.getContext("2d");
+
+		/* canvas events */
+		this.element.addEventListener("click", e => this.emit("click", e));
 	}
+
+	emit(label: string, e: MouseEvent) {
+		const position = this.getPosition();
+		const x = e.clientX - position.x;
+  		const y = e.clientY - position.y;
+		this.tree.forEach(component => {
+			if (component.path != null
+				&& this.ctx.isPointInPath(component.path, x, y)) {
+					component.emit(label, e);
+			}
+		});
+	}
+
 
 	add(component: Component, render: boolean = false) {
 		component.canvas = this;
-		this.tree.push(component);
+		this.tree.add(component);
 		if (render == false) return;
 		this.queue.add(() => {
 			component.render();
@@ -77,6 +93,22 @@ export class Canvas {
 		return await AnimationFrameQueue.nextFrame();
 	}
 
+	getPosition(el: HTMLElement = this.element) {
+		let x = 0;
+		let y = 0;
+ 
+		while (el) {
+			x += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+			y += (el.offsetTop - el.scrollTop + el.clientTop);
+			el = el.offsetParent as HTMLElement;
+		}
+
+		return {
+			x: x,
+			y: y
+		};
+	}
+
 	render() {
 		this.queue.add(() => {
 			/* just for demo, in final version, only diff will redrawan */
@@ -84,7 +116,6 @@ export class Canvas {
 			this.ctx.fillStyle = "#eeeeee";
 			this.ctx.fillRect(0, 0, this.element.width, this.element.height);
 			this.ctx.restore();
-			/* */
 			this.tree.forEach(component => {
 				component.render();
 				/*

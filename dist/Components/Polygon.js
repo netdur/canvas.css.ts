@@ -29,7 +29,6 @@ System.register(["../core/Component"], function (exports_1, context_1) {
                     if (points === void 0) { points = []; }
                     var _this = _super.call(this) || this;
                     _this.points = points;
-                    _this.points.push(_this.points[0]);
                     return _this;
                 }
                 Polygon.prototype.clearComponent = function () {
@@ -53,24 +52,18 @@ System.register(["../core/Component"], function (exports_1, context_1) {
                     };
                 };
                 Polygon.prototype.render = function () {
-                    var _this = this;
                     var rules = this.getStyle();
+                    this.path = new Path2D();
+                    this.path.moveTo(this.points[0].x, this.points[0].y);
+                    this.path.lineTo(this.points[1].x, this.points[1].y);
+                    this.path.lineTo(this.points[2].x, this.points[2].y);
+                    this.path.closePath();
                     this.canvas.ctx.save();
-                    this.canvas.ctx.beginPath();
                     this.canvas.ctx.fillStyle = rules['background-color'];
+                    this.canvas.ctx.fill(this.path);
                     this.canvas.ctx.lineWidth = parseInt(rules['border-top-width']);
                     this.canvas.ctx.strokeStyle = rules['border-top-style'];
-                    this.points.forEach(function (point, i) {
-                        if (i != 0) {
-                            _this.canvas.ctx.lineTo(point.x, point.y);
-                        }
-                        else {
-                            _this.canvas.ctx.moveTo(point.x, point.y);
-                        }
-                    });
-                    this.canvas.ctx.fill();
-                    this.canvas.ctx.stroke();
-                    this.canvas.ctx.closePath();
+                    this.canvas.ctx.stroke(this.path);
                     this.canvas.ctx.restore();
                 };
                 return Polygon;

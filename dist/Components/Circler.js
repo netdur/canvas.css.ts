@@ -31,13 +31,12 @@ System.register(["../core/Component"], function (exports_1, context_1) {
                 Circler.prototype.clearComponent = function () { };
                 Circler.prototype.render = function () {
                     var rules = this.getStyle();
-                    this.canvas.ctx.save();
-                    this.canvas.ctx.beginPath();
                     var radius = this.radius + 10 * Math.abs(Math.cos(this.angel));
-                    this.canvas.ctx.arc(200, 300, radius, 0, Math.PI * 2, false);
+                    this.path = new Path2D();
+                    this.path.arc(200, 300, radius, 0, Math.PI * 2, false);
+                    this.canvas.ctx.save();
                     this.canvas.ctx.fillStyle = rules['background-color'];
-                    this.canvas.ctx.fill();
-                    this.canvas.ctx.closePath();
+                    this.canvas.ctx.fill(this.path);
                     this.canvas.ctx.restore();
                 };
                 return Circler;
@@ -45,7 +44,7 @@ System.register(["../core/Component"], function (exports_1, context_1) {
             Circler = __decorate([
                 Component_1.RegisterComponent({
                     selector: 'circler',
-                    style: "\n        background: green;\n        top: 0px;\n        left: 0px;\n    "
+                    style: "\n        background: gray;\n        top: 0px;\n        left: 0px;\n    "
                 })
             ], Circler);
             exports_1("Circler", Circler);

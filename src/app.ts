@@ -1,4 +1,5 @@
 import { Canvas } from "./core/Canvas";
+import { Easing } from "./core/Easing";
 
 import { Pacman } from "./Components/Pacman";
 import { Polygon } from "./Components/Polygon";
@@ -25,6 +26,7 @@ class Main {
 
 		const rect = new Rect();
 		this.canvas.add(rect);
+		this.animateRect(rect);
 
 		const circler = new Circler();
 		circler.radius = 30;
@@ -33,9 +35,21 @@ class Main {
 
 		const aniPolygon = new Polygon([{x: 200, y: 150}, {x: 250, y: 100}, {x: 300, y: 150}]);
 		this.canvas.add(aniPolygon);
-		this.animatePolygon(aniPolygon);
+		aniPolygon.addListener("click", (e: MouseEvent) => {
+			this.animatePolygon(aniPolygon);
+		});
 
 		this.canvas.render();
+	}
+
+	async animateRect(rect: Rect) {
+		let iteration = 0;
+		const totalIterations = 200;
+		while (true) {
+			rect.x = Easing.easeInCubic(iteration, -100, 600, totalIterations);
+			iteration = (iteration < totalIterations) ? iteration + 1 : 0;
+			await this.canvas.nextFrame();
+		}
 	}
 
 	async animateCircler(circler: Circler) {
@@ -46,7 +60,8 @@ class Main {
 	}
 
 	async animatePolygon(polygon: Polygon) {
-		for (let i = 0; i < 200; i++) {
+		// boring linear
+		for (let i = 0; i < 210; i++) {
 			polygon.points.forEach((point, i) => {
 				polygon.points[i] = {
 					x: point.x + 1,
