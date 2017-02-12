@@ -1,5 +1,4 @@
 import { Component, RegisterComponent } from "../core/Component";
-import { CSS } from "../core/CSS";
 
 @RegisterComponent({
     selector: 'polygon',
@@ -14,30 +13,10 @@ export class Polygon extends Component {
         super();
     }
 
-    clearComponent() {
-        const bounds = this.calcBounds();
-        this.canvas.ctx.clearRect(bounds.x, bounds.y, bounds.width, bounds.height);
-    }
-
-    calcBounds() {
-        let x: Array<number> = [];
-        let y: Array<number> = [];
-        this.points.forEach(point => {
-            x.push(point.x);
-            y.push(point.y);
-        });
-        let minx = Math.min(...x);
-        let miny = Math.min(...y);
-        return {
-            x: minx,
-            y: miny,
-            width: Math.max(...x) - minx,
-            height: Math.max(...y) - miny
-        }
-    }
+    clearComponent() { }
 
     render() {
-        // this.clearComponent();
+        this.clearComponent();
         const rules = this.getStyle();
 
         this.path = new Path2D();

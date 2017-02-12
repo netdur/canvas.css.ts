@@ -1,10 +1,10 @@
-## Canvas CSS — CSS and SVG for Canvas Components in Typescript
+## Canvas CSS — CSS for Canvas Components in Typescript
 
 this is part of canvas web components implement
 
-this library helps dealing with CSS and related resources
+this library helps dealing with CSS and related resources, this library also does SVG/CSS shapes and animation
 
-screenshot of bellow examples [http://imgur.com/a/YFNlE](http://imgur.com/a/YFNlE)
+live demo [https://netdur.github.io/canvas.css.ts/](https://netdur.github.io/canvas.css.ts/)
 
 this is a polygon example, reading CSS from both decorator and style tag (note index.html)
 
@@ -21,28 +21,27 @@ this is a polygon example, reading CSS from both decorator and style tag (note i
 
         constructor(public points: any[] = []) {
             super();
-            this.points.push(this.points[0]);
         }
 
+        clearComponent() { }
+
         render() {
+            this.clearComponent();
             const rules = this.getStyle();
 
-            this.canvas.ctx.beginPath();
-            this.canvas.ctx.fillStyle = rules['background-color']; // pink or lightblue
-            this.canvas.ctx.lineWidth = parseInt(rules['border-top-width']); // 1px
+            this.path = new Path2D();
+            this.path.moveTo(this.points[0].x, this.points[0].y);
+            this.path.lineTo(this.points[1].x, this.points[1].y);
+            this.path.lineTo(this.points[2].x, this.points[2].y);
+            this.path.closePath();
+
+            this.canvas.ctx.save();
+            this.canvas.ctx.fillStyle = rules['background-color'];
+            this.canvas.ctx.fill(this.path);
+            this.canvas.ctx.lineWidth = parseInt(rules['border-top-width']);
             this.canvas.ctx.strokeStyle = rules['border-top-style']; // solid
-
-            this.points.forEach((point, i) => {
-                if (i != 0) {
-                    this.canvas.ctx.lineTo(point.x, point.y);
-                } else {
-                    this.canvas.ctx.moveTo(point.x, point.y);
-                }
-            });
-
-            this.canvas.ctx.fill();
-            this.canvas.ctx.stroke();
-            this.canvas.ctx.closePath();
+            this.canvas.ctx.stroke(this.path);
+            this.canvas.ctx.restore();
         }
     }
 
@@ -81,6 +80,8 @@ here a circle using SVG
     export class Circle extends Component {
         isSVGshape = true
     }
+
+
 
 ## License
 
