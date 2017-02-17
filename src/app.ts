@@ -26,12 +26,16 @@ class Main {
 
 		const rect = new Rect();
 		this.canvas.add(rect);
-		this.animateRect(rect);
+		rect.addListener("click", (e: MouseEvent) => {
+			this.animateRect(rect);
+		});
 
 		const circler = new Circler();
 		circler.radius = 30;
 		this.canvas.add(circler);
-		this.animateCircler(circler);
+		circler.addListener("click", (e: MouseEvent) => {
+			this.animateCircler(circler);
+		});
 
 		const aniPolygon = new Polygon([{x: 200, y: 150}, {x: 250, y: 100}, {x: 300, y: 150}]);
 		this.canvas.add(aniPolygon);

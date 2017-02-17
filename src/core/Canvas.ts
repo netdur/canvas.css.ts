@@ -68,7 +68,7 @@ export class Canvas {
 
 		/* init properties */
 		this.id = id;
-		this.ctx = this.element.getContext("2d");
+		this.ctx = this.element.getContext("2d", {alpha: false});
 		this.ctx.scale(scale, scale);
 
 		/* canvas events */
@@ -121,10 +121,8 @@ export class Canvas {
 	render() {
 		this.queue.add(() => {
 			/* just for demo, in final version, only diff will redrawan */
-			this.ctx.save();
 			this.ctx.fillStyle = "#eeeeee";
 			this.ctx.fillRect(0, 0, this.element.width, this.element.height);
-			this.ctx.restore();
 			this.tree.forEach(component => {
 				component.render();
 				/*

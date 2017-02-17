@@ -84,7 +84,7 @@ System.register(["./CSS", "./AnimationFrameQueue"], function (exports_1, context
                         });
                     });
                     this.id = id;
-                    this.ctx = this.element.getContext("2d");
+                    this.ctx = this.element.getContext("2d", { alpha: false });
                     this.ctx.scale(scale, scale);
                     this.element.addEventListener("click", function (e) { return _this.emit("click", e); });
                 }
@@ -139,10 +139,8 @@ System.register(["./CSS", "./AnimationFrameQueue"], function (exports_1, context
                 Canvas.prototype.render = function () {
                     var _this = this;
                     this.queue.add(function () {
-                        _this.ctx.save();
                         _this.ctx.fillStyle = "#eeeeee";
                         _this.ctx.fillRect(0, 0, _this.element.width, _this.element.height);
-                        _this.ctx.restore();
                         _this.tree.forEach(function (component) {
                             component.render();
                         });
@@ -150,6 +148,7 @@ System.register(["./CSS", "./AnimationFrameQueue"], function (exports_1, context
                 };
                 return Canvas;
             }());
+            Canvas.poolSize = 40;
             exports_1("Canvas", Canvas);
         }
     };

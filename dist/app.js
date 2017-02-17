@@ -77,11 +77,15 @@ System.register(["./core/Canvas", "./core/Easing", "./Components/Pacman", "./Com
                     this.canvas.add(circle);
                     var rect = new Rect_1.Rect();
                     this.canvas.add(rect);
-                    this.animateRect(rect);
+                    rect.addListener("click", function (e) {
+                        _this.animateRect(rect);
+                    });
                     var circler = new Circler_1.Circler();
                     circler.radius = 30;
                     this.canvas.add(circler);
-                    this.animateCircler(circler);
+                    circler.addListener("click", function (e) {
+                        _this.animateCircler(circler);
+                    });
                     var aniPolygon = new Polygon_1.Polygon([{ x: 200, y: 150 }, { x: 250, y: 100 }, { x: 300, y: 150 }]);
                     this.canvas.add(aniPolygon);
                     aniPolygon.addListener("click", function (e) {

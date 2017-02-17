@@ -85,4 +85,4 @@ here a circle using SVG
 
 ## License
 
-Released under a non-commercial BSD license
+GPL v2
